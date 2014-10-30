@@ -37,7 +37,7 @@
 #include <linux/termios.h>
 #include <linux/uaccess.h>
 #include <linux/wakelock.h>
-#include <mach/bcm4339_bt_lpm.h>
+#include <linux/bcm4339_bt_lpm.h>
 #include <mach/gpiomux.h>
 #include <mach/msm_serial_hs.h>
 #include <net/bluetooth/bluetooth.h>
@@ -170,8 +170,7 @@ static void enter_lpm_work(struct work_struct *data)
 	}
 	mutex_unlock(&bt_lpm.mutex);
 }
-
-void bcm_bt_lpm_reset_timer(void)
+static void bcm_bt_lpm_reset_timer(void)
 {
 	mutex_lock(&bt_lpm.mutex);
 
@@ -181,9 +180,8 @@ void bcm_bt_lpm_reset_timer(void)
 		HRTIMER_MODE_REL);
 	mutex_unlock(&bt_lpm.mutex);
 }
-EXPORT_SYMBOL(bcm_bt_lpm_reset_timer);
 
-void bcm_bt_lpm_exit_lpm(void)
+static void bcm_bt_lpm_exit_lpm(void)
 {
 	mutex_lock(&bt_lpm.mutex);
 
@@ -202,7 +200,6 @@ void bcm_bt_lpm_exit_lpm(void)
 		HRTIMER_MODE_REL);
 	mutex_unlock(&bt_lpm.mutex);
 }
-EXPORT_SYMBOL(bcm_bt_lpm_exit_lpm);
 
 void bcm_bt_lpm_exit_lpm_locked(struct uart_port *uport)
 {
