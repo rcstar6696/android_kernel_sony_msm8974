@@ -277,6 +277,4 @@ config BT_BCM4339
 	  Say Y here to compile support for"Broadcom BCM4339 control driver
 	  into the kernel or say M to compile it as module.
 
-source "drivers/bluetooth/broadcom/Kconfig"
-
 endmenu
