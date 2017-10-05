@@ -47,9 +47,7 @@
 #include <linux/skbuff.h>
 #include <linux/serial_core.h>
 
-#ifdef CONFIG_MACH_SONY_SHINANO
 #include <mach/bcm4339_bt_lpm.h>
-#endif
 
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
@@ -91,6 +89,13 @@ extern struct sock *nl_sk_hcisnoop;
 /* parameter to enable HCI snooping */
 extern int ldisc_snoop_enable_param;
 #endif
+
+/*
+#if CONFIG_SOMC_SHINANO_LPM
+extern void bcm_bt_lpm_exit_lpm(void);
+extern void bcm_bt_lpm_reset_timer(void);
+#endif
+*/
 
 /*****************************************************************************
 **  Constants & Macros
@@ -347,7 +352,7 @@ static int brcm_enqueue(struct hci_uart *hu, struct sk_buff *skb)
     struct brcm_struct *brcm = hu->priv;
     unsigned long lock_flags;
     BRCM_HCI_DBG(V4L2_DBG_TX, "hu %p skb %p", hu, skb);
-#ifdef CONFIG_MACH_SONY_SHINANO
+#if CONFIG_SOMC_SHINANO_LPM
     bcm_bt_lpm_exit_lpm();
 #endif
     spin_lock_irqsave(&hu->lock, lock_flags);
@@ -640,7 +645,7 @@ static int brcm_recv(struct hci_uart *hu, void *data, int count)
     }
     BRCM_HCI_DBG(V4L2_DBG_RX, "%s count %d",__func__,count);
 
-#ifdef CONFIG_MACH_SONY_SHINANO
+#if CONFIG_SOMC_SHINANO_LPM
     bcm_bt_lpm_reset_timer();
 #endif
     return count;
